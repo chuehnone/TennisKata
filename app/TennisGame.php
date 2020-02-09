@@ -2,13 +2,15 @@
 
 namespace App;
 
+use Exception;
+
 class TennisGame
 {
     private $player1 = null;
 
     private $player2 = null;
 
-    const SCORE_DESCRIPTION = [
+    private const SCORE_DESCRIPTION = [
         0 => 'Love',
         1 => '15',
         2 => '30',
@@ -21,6 +23,11 @@ class TennisGame
         $this->player2 = $player2;
     }
 
+    /**
+     * @throws Exception
+     *
+     * @return string
+     */
     public function getGameDescription(): string
     {
         if ($this->player1 === null || $this->player2 === null) {
@@ -29,11 +36,11 @@ class TennisGame
 
         $score1 = $this->player1->getScore();
         $score2 = $this->player2->getScore();
+
         if ($score1 - $score2 === 0) {
             if ($score1 >= 3) {
                 return 'Deuce';
             }
-
             return TennisGame::SCORE_DESCRIPTION[$score1] . '-All';
         }
 
@@ -46,6 +53,7 @@ class TennisGame
             if (abs($score1 - $score2) >= 2) {
                 return 'Win for ' . $name;
             }
+
             return 'Advantage ' . $name;
         }
 
