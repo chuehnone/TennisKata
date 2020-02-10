@@ -128,4 +128,56 @@ class TennisGameTest extends TestCase
         $player2->setScore(5);
         $this->assertEquals('Win for B', $game->getGameDescription());
     }
+
+    public function testGetGameDescriptionDifferentScoreWithTiebreak()
+    {
+        $player1 = new Player('A', 1);
+        $player2 = new Player('B');
+        $game = new TennisGame($player1, $player2, TennisGame::MODE_TIEBREAK);
+        $this->assertEquals('1-0', $game->getGameDescription());
+
+        $player1->setScore(4);
+        $player2->setScore(3);
+        $this->assertEquals('4-3', $game->getGameDescription());
+
+        $player1->setScore(6);
+        $player2->setScore(3);
+        $this->assertEquals('6-3', $game->getGameDescription());
+    }
+
+    public function testGetGameDescriptionSameScoreWithTiebreak()
+    {
+        $player1 = new Player('A');
+        $player2 = new Player('B');
+        $game = new TennisGame($player1, $player2, TennisGame::MODE_TIEBREAK);
+        $this->assertEquals('0-All', $game->getGameDescription());
+
+        $player1->setScore(3);
+        $player2->setScore(3);
+        $this->assertEquals('3-All', $game->getGameDescription());
+
+        $player1->setScore(6);
+        $player2->setScore(6);
+        $this->assertEquals('6-All', $game->getGameDescription());
+    }
+
+    public function testGetGameDescriptionWinnerWithTiebreak()
+    {
+        $player1 = new Player('A', 7);
+        $player2 = new Player('B', 5);
+        $game = new TennisGame($player1, $player2, TennisGame::MODE_TIEBREAK);
+        $this->assertEquals('Win for A', $game->getGameDescription());
+
+        $player1->setScore(10);
+        $player2->setScore(8);
+        $this->assertEquals('Win for A', $game->getGameDescription());
+
+        $player1->setScore(5);
+        $player2->setScore(7);
+        $this->assertEquals('Win for B', $game->getGameDescription());
+
+        $player1->setScore(8);
+        $player2->setScore(10);
+        $this->assertEquals('Win for B', $game->getGameDescription());
+    }
 }
